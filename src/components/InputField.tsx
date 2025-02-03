@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // icons
 import SendIcon from '@mui/icons-material/Send';
@@ -7,7 +7,38 @@ import SendIcon from '@mui/icons-material/Send';
 import { Box, Input } from "@mui/material";
 import { Button } from "@mui/material";
 
-const InputField: React.FC = () => {
+// configs
+import { getQuickResponse } from "../config/GroqConfig";
+
+// props\
+import { ChatProps } from "../interfaces/Props";
+
+interface InputFieldProps {
+    sendData: (value: ChatProps []) => void
+}
+
+const messages: ChatProps[] = [];
+
+const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
+    const [value, setValue] = useState<string>("")
+
+    useEffect(() => {sendData([...messages]);}, [])
+
+    const handleUserInput
+        = (e: React.ChangeEvent<HTMLInputElement>) => {
+            setValue(e.target.value);
+        }
+
+    const getResponse = async () => {
+        messages.push({ role: 'user', content: value });
+        const response = await getQuickResponse(value);
+        messages.push({ role: 'assistant', content: response as string });
+
+        // console.log(response);
+
+        sendData([...messages]);
+    }
+
     return (
         <>
             <Box sx={{
@@ -25,11 +56,13 @@ const InputField: React.FC = () => {
                         backgroundColor: 'rgb(25, 25, 25)',
                         borderRadius: 2.2,
                         color: 'white',
-                        fontSize: 18,
+                        fontSize: 16,
                         pl: 2,
                         pr: 2
                     }}
-                    placeholder="Type your message"></Input>
+                    value={value}
+                    onChange={handleUserInput}
+                    placeholder="Type your message here"></Input>
 
                 <Button
                     sx={{
@@ -40,6 +73,7 @@ const InputField: React.FC = () => {
                         borderRadius: 2.2,
                         textTransform: 'capitalize',
                     }}
+                    onClick={getResponse}
                     variant="contained">
                     <SendIcon sx={{ color: 'white' }} />
                 </Button>
