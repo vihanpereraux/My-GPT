@@ -21,10 +21,7 @@ export const getQuickResponse = async (prompt: string) => {
             messages: messages,
             model: "llama-3.3-70b-versatile"
         });
-        const answer = chatCompletion.choices[0].message.content;
-        
-        console.log(answer);
-        
+        const answer = chatCompletion.choices[0].message.content;        
         return answer as string;
     } catch (error) {
         alert(`Error - ${error}`);

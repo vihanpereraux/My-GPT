@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // icons
 import SendIcon from '@mui/icons-material/Send';
@@ -10,17 +10,33 @@ import { Button } from "@mui/material";
 // configs
 import { getQuickResponse } from "../config/GroqConfig";
 
-const InputField: React.FC = () => {
+// props\
+import { ChatProps } from "../interfaces/Props";
+
+interface InputFieldProps {
+    sendData: (value: ChatProps []) => void
+}
+
+const messages: ChatProps[] = [];
+
+const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
     const [value, setValue] = useState<string>("")
+
+    useEffect(() => {sendData([...messages]);}, [])
 
     const handleUserInput
         = (e: React.ChangeEvent<HTMLInputElement>) => {
-            console.log(e.target.value);
             setValue(e.target.value);
         }
 
-    const getResponse = () => {
-        const response = getQuickResponse(value);
+    const getResponse = async () => {
+        messages.push({ role: 'user', content: value });
+        const response = await getQuickResponse(value);
+        messages.push({ role: 'assistant', content: response as string });
+
+        // console.log(response);
+
+        sendData([...messages]);
     }
 
     return (
@@ -40,7 +56,7 @@ const InputField: React.FC = () => {
                         backgroundColor: 'rgb(25, 25, 25)',
                         borderRadius: 2.2,
                         color: 'white',
-                        fontSize: 18,
+                        fontSize: 16,
                         pl: 2,
                         pr: 2
                     }}
