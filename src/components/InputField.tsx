@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // icons
 import SendIcon from '@mui/icons-material/Send';
@@ -7,7 +7,22 @@ import SendIcon from '@mui/icons-material/Send';
 import { Box, Input } from "@mui/material";
 import { Button } from "@mui/material";
 
+// configs
+import { getQuickResponse } from "../config/GroqConfig";
+
 const InputField: React.FC = () => {
+    const [value, setValue] = useState<string>("")
+
+    const handleUserInput
+        = (e: React.ChangeEvent<HTMLInputElement>) => {
+            console.log(e.target.value);
+            setValue(e.target.value);
+        }
+
+    const getResponse = () => {
+        const response = getQuickResponse(value);
+    }
+
     return (
         <>
             <Box sx={{
@@ -29,7 +44,9 @@ const InputField: React.FC = () => {
                         pl: 2,
                         pr: 2
                     }}
-                    placeholder="Type your message"></Input>
+                    value={value}
+                    onChange={handleUserInput}
+                    placeholder="Type your message here"></Input>
 
                 <Button
                     sx={{
@@ -40,6 +57,7 @@ const InputField: React.FC = () => {
                         borderRadius: 2.2,
                         textTransform: 'capitalize',
                     }}
+                    onClick={getResponse}
                     variant="contained">
                     <SendIcon sx={{ color: 'white' }} />
                 </Button>

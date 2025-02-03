@@ -14,7 +14,7 @@ const Chat: React.FC = () => {
                 // border: '1px solid yellow',
                 height: 'calc(100vh - 45px)',
                 pl: 2,
-                pr: 2
+                pr: 2,
             }}>
                 {/* bubbles */}
                 <Box sx={{
