@@ -12,7 +12,7 @@ const Welcome: React.FC = () => {
                 display: "flex",
                 flexDirection: 'column',
                 width: '100vw',
-                height: '100vh',
+                height: 'calc(100vh - 45px)',
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>

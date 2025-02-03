@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // MUI components
 import { Button as Selection } from "@mui/material";
@@ -7,9 +8,20 @@ import { Button as Selection } from "@mui/material";
 import { SelectionButtonProps } from "../interfaces/Props";
 
 const Button: React.FC<SelectionButtonProps> = ({ title }) => {
+    const navigate = useNavigate();
+
+    const handleDirection = () => {
+        if (title === 'Quick Chat') {
+            navigate('/chat');
+        } else {
+            navigate('/chat');
+        }
+    }
+
     return (
         <>
             <Selection
+                onClick={handleDirection}
                 sx={{
                     pl: 5,
                     pr: 5,

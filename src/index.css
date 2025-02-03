@@ -3,4 +3,10 @@ body {
   min-width: 100%;
   min-height: 100vh;
   background-color: black !important;
+  overflow: hidden !important;
+}
+
+/* MUI overridings */
+.css-u63hfu-MuiInputBase-root-MuiInput-root::after {
+  border-bottom: none !important;
 }
