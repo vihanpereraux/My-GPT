@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {
+    useEffect,
+    useState,
+    useRef
+} from "react";
 
 // icons
 import SendIcon from '@mui/icons-material/Send';
@@ -10,19 +14,21 @@ import { Button } from "@mui/material";
 // configs
 import { getQuickResponse } from "../config/GroqConfig";
 
-// props\
+// props
 import { ChatProps } from "../interfaces/Props";
 
 interface InputFieldProps {
-    sendData: (value: ChatProps []) => void
+    sendData: (value: ChatProps[]) => void
 }
 
 const messages: ChatProps[] = [];
 
 const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
+    const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
     const [value, setValue] = useState<string>("")
 
-    useEffect(() => {sendData([...messages]);}, [])
+    // initial fetch
+    useEffect(() => { sendData([...messages]); }, [])
 
     const handleUserInput
         = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,13 +36,16 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
         }
 
     const getResponse = async () => {
+        setButtonDisabled(true);
         messages.push({ role: 'user', content: value });
-        const response = await getQuickResponse(value);
-        messages.push({ role: 'assistant', content: response as string });
-
-        // console.log(response);
-
         sendData([...messages]);
+        const response = await getQuickResponse(value);
+        // input reset
+        setValue('');
+        messages.push({ role: 'assistant', content: response as string });
+        // state update
+        sendData([...messages]);
+        setButtonDisabled(false);
     }
 
     return (
@@ -73,6 +82,7 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                         borderRadius: 2.2,
                         textTransform: 'capitalize',
                     }}
+                    disabled={buttonDisabled}
                     onClick={getResponse}
                     variant="contained">
                     <SendIcon sx={{ color: 'white' }} />
