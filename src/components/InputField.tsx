@@ -7,7 +7,7 @@ import React, {
 import SendIcon from '@mui/icons-material/Send';
 
 // MUI components
-import { Box, Input } from "@mui/material";
+import { Box } from "@mui/material";
 import { Button } from "@mui/material";
 
 // configs
@@ -20,6 +20,7 @@ interface InputFieldProps {
     sendData: (value: ChatProps[]) => void
 }
 
+// temp store
 const messages: ChatProps[] = [];
 
 const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
@@ -54,32 +55,33 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                 display: 'flex',
                 alignItems: 'center'
             }}>
-                <Input
+                <input
                     type="text"
-                    sx={{
+                    style={{
                         // border: '1px solid red',
                         width: '90%',
                         border: 'none',
-                        height: 65,
-                        backgroundColor: 'rgb(25, 25, 25)',
-                        borderRadius: 2.2,
+                        height: 50,
+                        backgroundColor: 'rgb(33, 33, 33)',
+                        borderRadius: 8,
                         color: 'white',
                         fontSize: 16,
-                        pl: 2,
-                        pr: 2
+                        paddingLeft: 2,
+                        paddingRight: 2,
                     }}
                     value={value}
                     onChange={handleUserInput}
-                    placeholder="Type your message here"></Input>
+                    placeholder="Type your message here"></input>
 
                 <Button
                     sx={{
-                        width: '10%',
+                        width: '8%',
                         height: 65,
                         backgroundColor: 'black',
                         color: 'black',
                         borderRadius: 2.2,
                         textTransform: 'capitalize',
+                        ml: 2
                     }}
                     disabled={buttonDisabled}
                     onClick={getResponse}
