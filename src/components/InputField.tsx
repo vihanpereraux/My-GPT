@@ -37,12 +37,19 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
 
     const getResponse = async () => {
         setButtonDisabled(true);
-        messages.push({ role: 'user', content: value });
-        sendData([...messages]);
-        const response = await getQuickResponse(value);
+        // snapshot
+        const inputValueSnapshot = value;
         // input reset
         setValue('');
+
+        messages.push({ role: 'user', content: inputValueSnapshot });
+
+        // state update 
+        sendData([...messages]);
+
+        const response = await getQuickResponse(inputValueSnapshot);
         messages.push({ role: 'assistant', content: response as string });
+
         // state update
         sendData([...messages]);
         setButtonDisabled(false);

@@ -12,6 +12,7 @@ const messages: any [] = [{
 
 export const getQuickResponse = async (prompt: string) => {
     try {
+        // local arr update
         messages.push({
             role: "user",
             content: prompt
@@ -22,6 +23,13 @@ export const getQuickResponse = async (prompt: string) => {
             model: "llama-3.3-70b-versatile"
         });
         const answer = chatCompletion.choices[0].message.content;        
+        
+        // local arr update
+        messages.push({
+            role: "assistant",
+            content: answer
+        });
+
         return answer as string;
     } catch (error) {
         alert(`Error - ${error}`);
