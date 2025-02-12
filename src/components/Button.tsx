@@ -27,10 +27,10 @@ const Button: React.FC<SelectionButtonProps> = ({ title }) => {
                     pr: 5,
                     pt: 2,
                     pb: 2,
-                    fontSize: 18,
+                    fontSize: 16,
                     textTransform: 'capitalize',
                     color: 'white',
-                    m: 1.5,
+                    m: .5,
                     backgroundColor: 'rgb(40, 40, 40)',
                     borderRadius: 2
                 }}>{title}</Selection>

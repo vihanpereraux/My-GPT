@@ -1,7 +1,10 @@
 import React from "react";
 
-// components
+// MUI components
 import { Box } from "@mui/material";
+import { Typography } from "@mui/material";
+
+// components
 import Button from "../components/Button";
 
 const Welcome: React.FC = () => {
@@ -9,15 +12,29 @@ const Welcome: React.FC = () => {
         <>
             {/* layout */}
             <Box sx={{
-                display: "flex",
-                flexDirection: 'column',
-                width: '100vw',
-                height: 'calc(100vh - 45px)',
+                display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                flexDirection: 'column',
+                justifyContent: 'center',
+                height: 'calc(100vh - 45px)',
             }}>
-                <Button title={"Quick Chat"}></Button>
-                <Button title={"Conversations"}></Button>
+                <Typography sx={{
+                    color: 'white',
+                    textAlign: 'center',
+                    fontSize: 20,
+                }}>Select an option</Typography>
+
+                {/* selections wrapper */}
+                <Box sx={{
+                    display: "flex",
+                    width: '100vw',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mt: 3
+                }}>
+                    <Button title={"Quick Chat"}></Button>
+                    <Button title={"Conversations"}></Button>
+                </Box>
             </Box>
         </>
     )
