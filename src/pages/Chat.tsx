@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 
 // components
 import InputField from "../components/InputField";
+import Bubble from "../components/Buble";
 
 // props
 import { ChatProps } from "../interfaces/Props";
@@ -22,6 +23,7 @@ const Chat: React.FC = () => {
             }}>
                 {/* bubbles */}
                 <div
+                    className="_bubbles_wrapper"
                     ref={(el) => {
                         if (el) {
                             el.scrollTop = el.scrollHeight;
@@ -34,36 +36,15 @@ const Chat: React.FC = () => {
                     {data?.map((item, index) => (
                         <Box key={index} sx={{
                             display: 'flex',
-                            justifyContent: item.role === 'user' ? "flex-end" : "flex-start",
+                            justifyContent:
+                                item.role === 'user' ?
+                                    "flex-end"
+                                    :
+                                    "flex-start",
                         }}>
-                            <Box sx={{
-                                backgroundColor: '#242424',
-                                pt: 1,
-                                pb: 0,
-                                pl: 2,
-                                pr: 2,
-                                mt: 2,
-                                borderRadius: 2.5,
-                                width: 'fit-content',
-                                maxWidth: '83%'
-                            }}>
-                                <span style={{
-                                    color: 'orangered',
-                                    textTransform: 'capitalize',
-                                    fontSize: 15,
-                                    fontWeight: 500,
-                                    opacity: .75
-                                }}>{item.role === 'user' ? "" : item.role}</span>
-
-                                <pre style={{
-                                    color: 'white',
-                                    fontFamily: 'Inter',
-                                    marginTop: 7,
-                                    fontSize: 16,
-                                    whiteSpace: 'pre-wrap',
-                                    lineHeight: 1.5
-                                }}>{item.content}</pre>
-                            </Box>
+                            <Bubble
+                                role={item.role}
+                                content={item.content} />
                         </Box>
                     ))}
                 </div>

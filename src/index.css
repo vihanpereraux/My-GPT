@@ -18,3 +18,7 @@ input:focus {
   border: 0 !important;
   outline: 0 !important;
 }
+
+._bubbles_wrapper::-webkit-scrollbar {
+  display: none !important;
+}
