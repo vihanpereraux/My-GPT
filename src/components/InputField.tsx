@@ -1,10 +1,12 @@
 import React, {
     useEffect,
     useState,
+    useRef
 } from "react";
 
 // icons
 import SendIcon from '@mui/icons-material/Send';
+import ImageIcon from '@mui/icons-material/Image';
 
 // MUI components
 import { Box } from "@mui/material";
@@ -12,6 +14,9 @@ import { Button } from "@mui/material";
 
 // configs
 import { getQuickResponse } from "../config/GroqConfig";
+
+// service
+import { uploadImage } from "../services/Cloudinary";
 
 // props
 import { ChatProps } from "../interfaces/Props";
@@ -21,11 +26,18 @@ interface InputFieldProps {
 }
 
 // temp store
-const messages: ChatProps[] = [];
+const messages: any[] = [
+    // {
+    //     role: "system",
+    //     content: "You are a helpful AI assitant."
+    // }
+];
 
 const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
     const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
     const [value, setValue] = useState<string>("")
+    const [attachment, setAttachment] = useState<any>(null);
+    // const [imageURL, setImageURL] = useState<string>("");
 
     // initial fetch
     useEffect(() => { sendData([...messages]); }, [])
@@ -42,17 +54,58 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
         // input reset
         setValue('');
 
-        messages.push({ role: 'user', content: inputValueSnapshot });
+        if (attachment) {
+            // image upload 2 the cloudinary
+            const response = await uploadImage(attachment); 
 
-        // state update 
-        sendData([...messages]);
-
-        const response = await getQuickResponse(inputValueSnapshot);
-        messages.push({ role: 'assistant', content: response as string });
+            messages.push({
+                role: 'user',
+                content: [
+                    {
+                        "type": "text",
+                        "text": inputValueSnapshot
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": response.secure_url
+                        }
+                    }
+                ]
+            });
+            // attachemnt state reset
+            setAttachment(null);
+        } else {
+            messages.push({ role: 'user', content: inputValueSnapshot });
+        }
 
         // state update
         sendData([...messages]);
-        setButtonDisabled(false);
+
+        const response = await getQuickResponse(messages);
+        // messages.push({ role: 'assistant', content: response as string });
+
+        // state update
+        if (response) { 
+            console.log(response);
+            sendData([...response]);
+            setButtonDisabled(false);
+        }
+    }
+
+    const inputFile = useRef<HTMLInputElement>(null);
+    const handleImageUpload = () => {
+        if (inputFile) {
+            inputFile.current?.click();
+        }
+    }
+
+    const detectAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('file attached');
+        if (e.target.files) {
+            setAttachment(e.target.files[0]);
+            console.log(URL.createObjectURL(e.target.files[0]));
+        }
     }
 
     return (
@@ -65,7 +118,6 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                 <input
                     type="text"
                     style={{
-                        // border: '1px solid red',
                         width: '90%',
                         border: 'none',
                         height: 50,
@@ -80,11 +132,21 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                     onChange={handleUserInput}
                     placeholder="Type your message here"></input>
 
+                <input ref={inputFile} onChange={detectAttachment} style={{ display: 'none' }} type="file" />
+                <Button
+                    onClick={handleImageUpload}
+                    sx={{
+                        width: '6%',
+                        height: 60
+                    }}>
+                    <ImageIcon sx={{ color: 'white' }} />
+                </Button>
+
                 <Button
                     sx={{
-                        width: '8%',
+                        width: '5%',
                         height: 65,
-                        backgroundColor: 'black',
+                        backgroundColor: 'red',
                         color: 'black',
                         borderRadius: 2.2,
                         textTransform: 'capitalize',
@@ -93,6 +155,8 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                     disabled={buttonDisabled}
                     onClick={getResponse}
                     variant="contained">
+
+                    {/* send button */}
                     <SendIcon sx={{ color: 'white' }} />
                 </Button>
             </Box>

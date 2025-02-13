@@ -11,7 +11,7 @@ import Bubble from "../components/Buble";
 import { ChatProps } from "../interfaces/Props";
 
 const Chat: React.FC = () => {
-    const [data, setData] = useState<ChatProps[]>([])
+    const [data, setData] = useState<any[]>([])
 
     return (
         <>
@@ -34,18 +34,48 @@ const Chat: React.FC = () => {
                         overflow: 'auto',
                     }}>
                     {data?.map((item, index) => (
-                        <Box key={index} sx={{
-                            display: 'flex',
-                            justifyContent:
-                                item.role === 'user' ?
-                                    "flex-end"
-                                    :
-                                    "flex-start",
-                        }}>
-                            <Bubble
-                                role={item.role}
-                                content={item.content} />
-                        </Box>
+                        item.role === "system" ?
+                            null
+                            :
+                            (
+                                <Box
+                                    key={index}
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent:
+                                            item.role === 'user' ?
+                                                "flex-end"
+                                                :
+                                                "flex-start",
+                                    }}>
+                                    {typeof item.content === "object" ?
+                                        (
+                                            <Box style={{
+                                                border: 'none',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                justifyContent: 'flex-end',
+                                                alignItems: 'flex-end'
+                                            }}>
+                                                <img
+                                                    style={{ width: '25%', borderRadius: 10 }}
+                                                    src={item.content[1].image_url.url} alt="" />
+
+                                                <Bubble
+                                                    role={item.role}
+                                                    content={item.content[0].text} />
+                                            </Box>
+                                        )
+                                        :
+                                        (
+                                            <Bubble
+                                                role={item.role}
+                                                content={item.content} />
+                                        )}
+
+                                </Box>
+                            )
+
                     ))}
                 </div>
 

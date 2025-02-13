@@ -5,32 +5,31 @@ const groq = new Groq({
     dangerouslyAllowBrowser: true
 });
 
-const messages: any [] = [{
-    role: "system",
-    content: "You are a helpful AI assitant."
-}];
+// const messages: any[] = [{
+//     role: "system",
+//     content: "You are a helpful AI assitant."
+// }];
 
-export const getQuickResponse = async (prompt: string) => {
+export const getQuickResponse = async (messages: any[]) => {
     try {
-        // local arr update
-        messages.push({
-            role: "user",
-            content: prompt
-        });
-
         const chatCompletion = await groq.chat.completions.create({
             messages: messages,
-            model: "llama-3.3-70b-versatile"
+            model: "llama-3.2-11b-vision-preview",
+            temperature: 1,
+            max_completion_tokens: 1024,
+            top_p: 1,
+            stream: false,
+            stop: null
         });
-        const answer = chatCompletion.choices[0].message.content;        
-        
+        const answer = chatCompletion.choices[0].message.content;
+
         // local arr update
         messages.push({
             role: "assistant",
             content: answer
         });
 
-        return answer as string;
+        return messages;
     } catch (error) {
         alert(`Error - ${error}`);
     }
