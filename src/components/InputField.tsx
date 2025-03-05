@@ -87,7 +87,6 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
 
         // state update
         if (response) { 
-            console.log(response);
             sendData([...response]);
             setButtonDisabled(false);
         }
@@ -136,8 +135,10 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                 <Button
                     onClick={handleImageUpload}
                     sx={{
-                        width: '6%',
-                        height: 60
+                        width: '5%',
+                        height: 55,
+                        ml: 1,
+                        borderRadius: 2.5
                     }}>
                     <ImageIcon sx={{ color: 'white' }} />
                 </Button>
@@ -145,12 +146,12 @@ const InputField: React.FC<InputFieldProps> = ({ sendData }) => {
                 <Button
                     sx={{
                         width: '5%',
-                        height: 65,
-                        backgroundColor: 'red',
+                        height: 55,
+                        backgroundColor: 'rgb(38, 38, 38)',
                         color: 'black',
                         borderRadius: 2.2,
                         textTransform: 'capitalize',
-                        ml: 2
+                        ml: 1
                     }}
                     disabled={buttonDisabled}
                     onClick={getResponse}

@@ -8,7 +8,7 @@ import InputField from "../components/InputField";
 import Bubble from "../components/Buble";
 
 // props
-import { ChatProps } from "../interfaces/Props";
+// import { ChatProps } from "../interfaces/Props";
 
 const Chat: React.FC = () => {
     const [data, setData] = useState<any[]>([])
@@ -38,8 +38,7 @@ const Chat: React.FC = () => {
                             null
                             :
                             (
-                                <Box
-                                    key={index}
+                                <Box key={index}
                                     sx={{
                                         display: 'flex',
                                         justifyContent:
@@ -57,6 +56,7 @@ const Chat: React.FC = () => {
                                                 justifyContent: 'flex-end',
                                                 alignItems: 'flex-end'
                                             }}>
+                                                {/* image preview */}
                                                 <img
                                                     style={{ width: '25%', borderRadius: 10 }}
                                                     src={item.content[1].image_url.url} alt="" />

@@ -1,4 +1,6 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 // MUI components
 import { Box } from "@mui/material";
@@ -29,14 +31,19 @@ const Bubble: React.FC<BubbleProps> = ({
                     opacity: .75
                 }}>{role === 'user' ? "" : role}</span>
 
-                <pre style={{
-                    color: 'white',
-                    fontFamily: 'Inter',
-                    marginTop: 7,
-                    fontSize: 16,
-                    whiteSpace: 'pre-wrap',
-                    lineHeight: 1.5
-                }}>{content}</pre>
+                {role === 'user' ? (
+                    <pre style={{
+                        color: 'white',
+                        fontFamily: 'Inter',
+                        marginTop: 7,
+                        fontSize: 16,
+                        whiteSpace: 'pre-wrap',
+                        lineHeight: 1.5
+                    }}>{content}</pre>
+                ) : (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+                )}
+                
             </Box>
         </>
     )
